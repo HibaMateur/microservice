@@ -30,7 +30,7 @@ services:
     depends_on:
       - eureka-server
       - bookDB
-    environment:      
+          
 
   clubDB:
     container_name: clubDB-container
@@ -52,7 +52,7 @@ services:
     depends_on:
       - eureka-server
       - clubDB        
-    environment:
+    
 
   courseDB:
     container_name: courseDB-container
@@ -74,7 +74,7 @@ services:
     depends_on:
       - eureka-server
       - courseDB 
-    environment:
+    
   establishementDB:
     container_name: establishementDB-container
     image: postgres
@@ -87,7 +87,7 @@ services:
       - establishementVolume:/var/lib/postgresql/data
   establishement-service:
     build:
-      context: ./establishement
+      context: ./establishment
       dockerfile: Dockerfile
     container_name: establishement-container
     image: establishement-image
@@ -95,7 +95,7 @@ services:
     depends_on:
       - eureka-server
       - establishementDB            
-    environment:
+    
   eventDB:
     container_name: eventDB-container
     image: postgres
@@ -116,10 +116,10 @@ services:
     depends_on:
       - eureka-server
       - eventDB        
-    environment:
+    
   api-gateway:
     build:
-      context: ./cloud-gateway-api
+      context: ./gateway
       dockerfile: Dockerfile
     container_name: api-gateway-container
     image: api-gateway-image
@@ -131,7 +131,7 @@ services:
       - book-service
       - course-service
       - establishement-service
-    environment:
+    
 
     ports:
       - 8050:8050

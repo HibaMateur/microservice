@@ -1,0 +1,35 @@
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: bookModule
+          uri: http://book-service:8040/
+          predicates:
+            - Path=/book/**
+        - id: eventModule
+          uri: http://event-service:8044/
+          predicates:
+            - Path=/event/**
+        - id: clubModule
+          uri: http://club-service:8041/
+          predicates:
+            - Path=/club/**
+        - id: courseModule
+          uri: http://course-service:8042/
+          predicates:
+            - Path=/course/** 
+        - id: establishementModule
+          uri: http://establishement-service:8045/
+          predicates:
+            - Path=/establishement/**               
+            
+  application:
+   name: gateway
+server:
+  port: 8050 
+eureka:
+  client:
+    service-url:
+      default-zone: http://localhost:8761  
+  

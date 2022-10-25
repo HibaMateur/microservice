@@ -1,4 +1,4 @@
 FROM openjdk:8
 EXPOSE 8040
-ADD target/club.jar club.jar
-ENTRYPOINT ["java","-jar","/club.jar"]
+ADD target/event.jar event.jar
+ENTRYPOINT ["java","-jar","/event.jar"]
