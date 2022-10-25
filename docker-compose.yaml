@@ -1,0 +1,144 @@
+version: "3.8"
+services:
+  eureka-server:
+    build:
+      context: ./Eureka-server/
+      dockerfile: Dockerfile
+    restart: always
+    container_name: eureka-container
+    image: eureka-image
+    ports:
+      - "8761:8761"
+      
+  bookDB:
+    container_name: bookDB-container
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: karim123
+      POSTGRES_DB: book-service
+      POSTGRES_USER: postgres
+    volumes:
+      - bookVolume:/var/lib/postgresql/data
+  book-service:
+    build:
+      context: ./book
+      dockerfile: Dockerfile
+    container_name: book-container
+    image: book-image
+    restart: always
+    depends_on:
+      - eureka-server
+      - bookDB
+    environment:      
+
+  clubDB:
+    container_name: clubDB-container
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: karim123
+      POSTGRES_DB: club-service
+      POSTGRES_USER: postgres
+    volumes:
+      - clubVolume:/var/lib/postgresql/data
+  club-service:
+    build:
+      context: ./club
+      dockerfile: Dockerfile
+    container_name: club-container
+    image: club-image
+    restart: always
+    depends_on:
+      - eureka-server
+      - clubDB        
+    environment:
+
+  courseDB:
+    container_name: courseDB-container
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: karim123
+      POSTGRES_DB: course-service
+      POSTGRES_USER: postgres
+    volumes:
+      - courseVolume:/var/lib/postgresql/data
+  course-service:
+    build:
+      context: ./course
+      dockerfile: Dockerfile
+    container_name: course-container
+    image: course-image
+    restart: always
+    depends_on:
+      - eureka-server
+      - courseDB 
+    environment:
+  establishementDB:
+    container_name: establishementDB-container
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: karim123
+      POSTGRES_DB: establishement-service
+      POSTGRES_USER: postgres
+    volumes:
+      - establishementVolume:/var/lib/postgresql/data
+  establishement-service:
+    build:
+      context: ./establishement
+      dockerfile: Dockerfile
+    container_name: establishement-container
+    image: establishement-image
+    restart: always
+    depends_on:
+      - eureka-server
+      - establishementDB            
+    environment:
+  eventDB:
+    container_name: eventDB-container
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: karim123
+      POSTGRES_DB: event-service
+      POSTGRES_USER: postgres
+    volumes:
+      - eventVolume:/var/lib/postgresql/data
+  event-service:
+    build:
+      context: ./event
+      dockerfile: Dockerfile
+    container_name: event-container
+    image: event-image
+    restart: always
+    depends_on:
+      - eureka-server
+      - eventDB        
+    environment:
+  api-gateway:
+    build:
+      context: ./cloud-gateway-api
+      dockerfile: Dockerfile
+    container_name: api-gateway-container
+    image: api-gateway-image
+    restart: always
+    depends_on:
+      - eureka-server
+      - club-service
+      - event-service
+      - book-service
+      - course-service
+      - establishement-service
+    environment:
+
+    ports:
+      - 8050:8050
+      
+volumes:
+  bookVolume:
+  eventVolume:
+  establishementVolume:
+  courseVolume:
+  clubVolume:
